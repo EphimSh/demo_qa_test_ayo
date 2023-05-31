@@ -15,7 +15,8 @@ public class PracticeFormTest extends TestConfig{
     @Test
     void formTest(){
         open("automation-practice-form");
-
+        
+        //main information
         $("#firstName").setValue("ephim");
         $("#lastName").setValue("sh");
         $("#userEmail").setValue("abatukam@mail.com");
@@ -27,32 +28,31 @@ public class PracticeFormTest extends TestConfig{
         $("#dateOfBirth-wrapper div[class*='month'] [value='1']").click();
         $("#dateOfBirth-wrapper div[class*='year'] [value='1992']").click();
         $("#dateOfBirth-wrapper div[class*='day--016']").click();
-
-
-
-        //date of birth -end-
-
+        
+        
+        //major and hobbies
         $("#subjectsContainer").click();
         $("#subjectsInput").setValue("Computer Science").pressEnter();
         $("#hobbiesWrapper label[for='hobbies-checkbox-1']").click();
         $("#hobbiesWrapper label[for='hobbies-checkbox-2']").click();
         $("#hobbiesWrapper label[for='hobbies-checkbox-3']").click();
 
-
+        //upload file
         $("#uploadPicture").uploadFile(new File("src/test/java/demo/qa/data/bingchilling.jpg"));
+        
+        //address
         $("#currentAddress").setValue("Russia, Saint-Petersburg");
-
+        
+        //state and city
         $("#state .css-1hwfws3").click();
-
-
         $("#state [class*='menu'] [id*='option-3']").click();
         $("#city").click();
         $("#city [class*='menu'] [id*='option-0']").click();
-
+       
         $("#submit").click();
-
+        
+        //assertions
         $(".modal-content .table-responsive").shouldBe(visible);
-
         $(" tr:nth-child(1) td:nth-child(2)").shouldHave(text("ephim sh"));
         $(" tr:nth-child(2) td:nth-child(2)").shouldHave(text("abatukam@mail.com"));
         $(" tr:nth-child(3) td:nth-child(2)").shouldHave(text("Male"));
@@ -62,20 +62,6 @@ public class PracticeFormTest extends TestConfig{
         $(" tr:nth-child(8) td:nth-child(2)").shouldHave(text("bingchilling.jpg"));
         $(" tr:nth-child(9) td:nth-child(2)").shouldHave(text("Russia, Saint-Petersburg"));
         $(" tr:nth-child(10) td:nth-child(2)").shouldHave(text("Rajasthan Jaipur"));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
