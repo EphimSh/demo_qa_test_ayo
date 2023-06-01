@@ -1,13 +1,13 @@
 package demo.qa;
 
-
-import com.codeborne.selenide.ClickOptions;
+import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -21,48 +21,55 @@ public class PracticeFormTest extends TestConfig{
             $("#firstName").setValue("ephim");
             $("#lastName").setValue("sh");
             $("#userEmail").setValue("abatukam@mail.com");
-            $("#genterWrapper [for='gender-radio-1']").click();
+            $("#genterWrapper").find(byText("Male")).click();
             $("#userNumber").setValue("1010101010");
 
             //date of birth -start-
             $("#dateOfBirthInput").click();
-            $("#dateOfBirth-wrapper div[class*='month'] [value='1']").click();
-            $("#dateOfBirth-wrapper div[class*='year'] [value='1992']").click();
-            $("#dateOfBirth-wrapper div[class*='day--016']").click();
+            SelenideElement dateOfBirthController = $("#dateOfBirth-wrapper");
+            dateOfBirthController.$("div[class*='month'] [value='1']").click();
+            dateOfBirthController.$("div[class*='year'] [value='1992']").click();
+            dateOfBirthController.$("div[class*='day--016']").click();
 
 
             //major and hobbies
             $("#subjectsContainer").click();
             $("#subjectsInput").setValue("Computer Science").pressEnter();
-            $("#hobbiesWrapper label[for='hobbies-checkbox-1']").click();
-            $("#hobbiesWrapper label[for='hobbies-checkbox-2']").click();
-            $("#hobbiesWrapper label[for='hobbies-checkbox-3']").click();
+
+            SelenideElement hobbyCheckBox = $("#hobbiesWrapper");
+            hobbyCheckBox.$(byText("Sports")).click();
+            hobbyCheckBox.$(byText("Reading")).click();
+            hobbyCheckBox.$(byText("Music")).click();
 
             //upload file
-            $("#uploadPicture").uploadFile(new File("src/test/java/demo/qa/data/bingchilling.jpg"));
+            $("#uploadPicture").uploadFile(new File("src/test/resources/images/bingchilling.jpg"));
 
             //address
             $("#currentAddress").setValue("Russia, Saint-Petersburg");
 
             //state and city
-            $("#state .css-1hwfws3").click();
-            $("#state [class*='menu'] [id*='option-3']").click();
+            SelenideElement stateDropDown = $("#state");
+            stateDropDown.click();
+            $(byText("Rajasthan")).click();
             $("#city").click();
-            $("#city [class*='menu'] [id*='option-0']").click();
+            $(byText("Jaipur")).click();
 
             $("#submit").click();
 
             //assertions
-            $(".modal-content .table-responsive").shouldBe(visible);
-            $(" tr:nth-child(1) td:nth-child(2)").shouldHave(text("ephim sh"));
-            $(" tr:nth-child(2) td:nth-child(2)").shouldHave(text("abatukam@mail.com"));
-            $(" tr:nth-child(3) td:nth-child(2)").shouldHave(text("Male"));
-            $(" tr:nth-child(4) td:nth-child(2)").shouldHave(text("1010101010"));
-            $(" tr:nth-child(5) td:nth-child(2)").shouldHave(text("16 February,1992"));
-            $(" tr:nth-child(6) td:nth-child(2)").shouldHave(text("Computer Science"));
-            $(" tr:nth-child(8) td:nth-child(2)").shouldHave(text("bingchilling.jpg"));
-            $(" tr:nth-child(9) td:nth-child(2)").shouldHave(text("Russia, Saint-Petersburg"));
-            $(" tr:nth-child(10) td:nth-child(2)").shouldHave(text("Rajasthan Jaipur"));
+            SelenideElement modalWindow = $(".modal-content .table-responsive");
+            modalWindow.shouldBe(visible);
+
+            modalWindow.$(byText("Student Name")).closest("tr").shouldHave(text("ephim sh"));
+            modalWindow.$(byText("Student Email")).closest("tr").shouldHave(text("abatukam@mail.com"));
+            modalWindow.$(byText("Gender")).closest("tr").shouldHave(text("Male"));
+            modalWindow.$(byText("Mobile")).closest("tr").shouldHave(text("1010101010"));
+            modalWindow.$(byText("Date of Birth")).closest("tr").shouldHave(text("16 February,1992"));
+            modalWindow.$(byText("Subjects")).closest("tr").shouldHave(text("Computer Science"));
+            modalWindow.$(byText("Hobbies")).closest("tr").lastChild().shouldHave(text("Sports, Reading, Music"));
+            modalWindow.$(byText("Picture")).closest("tr").shouldHave(text("bingchilling.jpg"));
+            modalWindow.$(byText("Address")).closest("tr").lastChild().shouldHave(text("Russia, Saint-Petersburg"));
+            modalWindow.$(byText("State and City")).closest("tr").shouldHave(text("Rajasthan Jaipur"));
 
     }
 }
