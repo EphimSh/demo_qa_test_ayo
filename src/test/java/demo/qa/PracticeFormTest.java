@@ -2,6 +2,7 @@ package demo.qa;
 
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
 
 import java.io.File;
 
@@ -51,8 +52,9 @@ public class PracticeFormTest extends TestConfig{
             SelenideElement stateDropDown = $("#state");
             stateDropDown.click();
             $(byText("Rajasthan")).click();
+            SelenideElement cityDropDown = $("#city");
             $("#city").click();
-            $(byText("Jaipur")).click();
+            cityDropDown.$(byText("Jaipur")).click();
 
             $("#submit").click();
 
@@ -60,16 +62,18 @@ public class PracticeFormTest extends TestConfig{
             SelenideElement modalWindow = $(".modal-content .table-responsive");
             modalWindow.shouldBe(visible);
 
-            modalWindow.$(byText("Student Name")).closest("tr").shouldHave(text("ephim sh"));
-            modalWindow.$(byText("Student Email")).closest("tr").shouldHave(text("abatukam@mail.com"));
-            modalWindow.$(byText("Gender")).closest("tr").shouldHave(text("Male"));
-            modalWindow.$(byText("Mobile")).closest("tr").shouldHave(text("1010101010"));
-            modalWindow.$(byText("Date of Birth")).closest("tr").shouldHave(text("16 February,1992"));
-            modalWindow.$(byText("Subjects")).closest("tr").shouldHave(text("Computer Science"));
-            modalWindow.$(byText("Hobbies")).closest("tr").lastChild().shouldHave(text("Sports, Reading, Music"));
-            modalWindow.$(byText("Picture")).closest("tr").shouldHave(text("bingchilling.jpg"));
-            modalWindow.$(byText("Address")).closest("tr").lastChild().shouldHave(text("Russia, Saint-Petersburg"));
-            modalWindow.$(byText("State and City")).closest("tr").shouldHave(text("Rajasthan Jaipur"));
+            modalWindow.$(byText("Student Name")).parent().shouldHave(text("ephim sh"));
+            modalWindow.$(byText("Student Email")).parent().shouldHave(text("abatukam@mail.com"));
+            modalWindow.$(byText("Gender")).parent().shouldHave(text("Male"));
+            modalWindow.$(byText("Mobile")).parent().shouldHave(text("1010101010"));
+            modalWindow.$(byText("Date of Birth")).parent().shouldHave(text("16 February,1992"));
+            modalWindow.$(byText("Subjects")).parent().shouldHave(text("Computer Science"));
+            modalWindow.$(byText("Hobbies")).parent().shouldHave(text("Sports, Reading, Music"));
+            modalWindow.$(byText("Picture")).parent().shouldHave(text("bingchilling.jpg"));
+            modalWindow.$(byText("Address")).parent().shouldHave(text("Russia, Saint-Petersburg"));
+            modalWindow.$(byText("State and City")).parent().shouldHave(text("Rajasthan Jaipur"));
+
+
 
     }
 }
